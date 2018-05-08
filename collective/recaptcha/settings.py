@@ -64,26 +64,8 @@ RecaptchaSettings = factory(RecaptchaSettingsAnnotations)
 
 
 def getRecaptchaSettings():
-    registry = getUtility(IRegistry)
-    if TRY_REGISTRY:
-        # if plone.formwidget.recaptcha is installed, try getting
-        # its settings from the registry
-        try:
-            settings = registry.forInterface(IReCaptchaSettings)
-            if settings.public_key and settings.private_key:
-                return settings
-        except:
-            pass
-    # try getting settings from the registry first
-    try:
-        settings = registry.forInterface(IRecaptchaSettings)
-        if settings.public_key and settings.private_key:
-            return settings
-    except KeyError:
-        # fall back to our storage of an annotation on the site if the settings
-        # haven't been configured
-        site = getSite()
-        return IRecaptchaSettings(site)
+    site = getSite()
+    return IRecaptchaSettings(site)
 
 
 class RecaptchaSettingsForm(EditForm):
